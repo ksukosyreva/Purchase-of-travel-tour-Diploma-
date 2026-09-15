@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.41
+    container_name: mySql-app
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=pass
+  postgres:
+    image: postgres:13-alpine
+    container_name: postgres-app
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  gate-simulator:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./gate-simulator:/app
+    command: sh -c "npm install && npm start"
+    ports:
+      - "9999:9999"
