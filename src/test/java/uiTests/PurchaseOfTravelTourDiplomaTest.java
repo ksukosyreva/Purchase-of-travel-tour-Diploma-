@@ -255,7 +255,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkExpiryDateError();
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    }// баг-репорт: приложение реагирует по разному на одну и ту же ошибку
+    }// + баг-репорт: приложение реагирует по разному на одну и ту же ошибку
 
     @Test
     void shouldNotAcceptExpiredCardInCredit() {
@@ -266,7 +266,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         var byCredit = startPage.goToByCreditCardPurchase();
         var cardInfo = DataGenerator.generateApprovedFullCardInfo().toBuilder().month(month).year(year).build();
         byCredit.filledCardForm(cardInfo);
-        byCredit.checkErrorSubMessage("Месяц", "Неверно указан срок действия карты");
+        byCredit.checkExpiryDateError();
         Assertions.assertNull(SQLHelper.getCreditCardStatus());
     }
 
