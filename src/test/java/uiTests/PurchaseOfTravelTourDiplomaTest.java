@@ -50,7 +50,7 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("APPROVED", SQLHelper.getCreditCardStatusWithWait()),
                 () -> Assertions.assertEquals("credit", SQLHelper.getPaymentMethod())
         );
-    } //+ баг-репорт: платёж успешен, но БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
+    }
 
     @Test
     void shouldBeErrorInDebitPaymentByDeclinedCard() {
@@ -64,7 +64,7 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("DECLINED", SQLHelper.getDebitCardStatusWithWait()),
                 () -> Assertions.assertEquals("debit", SQLHelper.getPaymentMethod())
         );
-    } // + сделать баг репорт (в сообщении - успех, в БД - отклонено)
+    }
 
     @Test
     void shouldBeErrorInCreditPaymentByDeclinedCard() {
@@ -79,8 +79,6 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("credit", SQLHelper.getPaymentMethod())
         );
     }
-    // + сделать баг репорт (сообщение - успех, в БД - отклонено)
-    // +баг-репорт: БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
 
     @Test
     void shouldAcceptNameWithApostropheInOwnerField() {
@@ -203,7 +201,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Месяц", "Неверно указан срок действия карты");
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    } //баг-репорт: при указании месяца "00", не появляется сообщение об ошибке (не работает валидация), запись появляется в БД)
+    }
 
     @ParameterizedTest(name = "Месяц {0} должен быть не валидным в кредите")
     @CsvSource({"00", "13"})
@@ -214,7 +212,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Месяц", "Неверно указан срок действия карты");
         Assertions.assertNull(SQLHelper.getCreditCardStatus());
-    } // +баг-репорт: в кредите принимает 00 месяц и отправляет форму, в БД -APPROVED
+    }
 
     @ParameterizedTest(name = "Срок действия карты + {0} мес. должен быть валидным в дебите")
     @CsvSource({"0", "1", "59", "60"})
@@ -228,7 +226,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkSuccessMessage("Операция одобрена Банком.");
         Assertions.assertEquals("APPROVED", SQLHelper.getDebitCardStatus());
-    } //баг-репорт: приложение не принимает карту сроком действия 59 мес (перед верхней границей граничного значения).???
+    }
 
     @ParameterizedTest(name = "Срок действия карты + {0} мес. должен быть валидным в кредите")
     @CsvSource({"0", "1", "59", "60"})
@@ -242,7 +240,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byCredit.filledCardForm(cardInfo);
         byCredit.checkSuccessMessage("Операция одобрена Банком.");
         Assertions.assertEquals("APPROVED", SQLHelper.getCreditCardStatus());
-    } //баг-репорт: приложение не принимает карту сроком действия 60 мес???
+    }
 
     @Test
     void shouldNotAcceptExpiredCardInDebit() {
@@ -255,7 +253,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkExpiryDateError();
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    }// + баг-репорт: приложение реагирует по разному на одну и ту же ошибку
+    }
 
     @Test
     void shouldNotAcceptExpiredCardInCredit() {
@@ -336,7 +334,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Владелец", "Неверный формат");
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    } //баг репорт: форма принимает как валидное имя владельца на кириллице и отправляет данные в БД
+    }
 
     @Test
     void shouldNotAcceptOnlySpacesInOwnerField() {
@@ -358,7 +356,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Владелец", "Неверный формат");
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    } //баг репорт: форма принимает числа в поле Владелец и отпраавляет данные в БД
+    }
 
     @Test
     void shouldAcceptIfOneLetterInOwnerField() {
@@ -391,7 +389,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Владелец", "Превышен лимит символов");
         Assertions.assertNull(SQLHelper.getDebitCardStatusWithWait());
-    } // баг-репорт: поле "Владелец" принимает неограниченное количество символов
+    }
 
     @Test
     void shouldNotAccept2DigitsInCVCField() {
@@ -414,6 +412,6 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> byDebit.checkErrorSubMessage("Владелец", "Неверный формат"),
                 () -> Assertions.assertNull(SQLHelper.getDebitCardStatusWithWait())
         );
-    } //баг-репорт: форма пропускает спец.символы и эти данные проходят в БД (из-за чего м.б. возможность SQL-инъекций)
+    }
 
 }
