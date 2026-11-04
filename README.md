@@ -62,7 +62,7 @@
 
 `./gradlew allureServe`
 
-##Скриншот отчета Allure
+## Скриншот отчета Allure
 <img width="1920" height="894" alt="image" src="https://github.com/user-attachments/assets/ef62ec3c-2db0-494e-8e24-42190900cc75" />
 
 
