@@ -1,12 +1,14 @@
 package PageObjects;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import data.DataGenerator;
 import data.DataHelper;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -43,7 +45,15 @@ public class BaseFillFormPaymentPage {
 
     public void checkErrorSubMessage(String field, String text) {
         $$(".input").findBy(Condition.text(field)).$(".input__sub")
-                .should(Condition.visible)
+                .should(visible)
                 .shouldHave(Condition.text(text));
+    }
+
+    public void checkExpiryDateError() {
+        Selenide.$$(".input__sub")
+                .find(Condition.or("Ошибка срока действия карты",
+                        Condition.text("Неверно указан срок действия карты"),
+                        Condition.text("Истёк срок действия карты")))
+                .shouldBe(Condition.visible);
     }
 }

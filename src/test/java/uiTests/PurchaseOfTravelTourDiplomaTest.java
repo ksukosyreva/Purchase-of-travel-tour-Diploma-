@@ -8,6 +8,7 @@ import dataBase.SQLHelper;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -18,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import static io.restassured.RestAssured.given;
 
 public class PurchaseOfTravelTourDiplomaTest {
-    @AfterEach
+    @BeforeEach
     void tearDown() {
         SQLHelper.cleanData();
     }
@@ -49,7 +50,7 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("APPROVED", SQLHelper.getCreditCardStatusWithWait()),
                 () -> Assertions.assertEquals("credit", SQLHelper.getPaymentMethod())
         );
-    } // баг-репорт: платёж успешен, но БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
+    } //+ баг-репорт: платёж успешен, но БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
 
     @Test
     void shouldBeErrorInDebitPaymentByDeclinedCard() {
@@ -63,7 +64,7 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("DECLINED", SQLHelper.getDebitCardStatusWithWait()),
                 () -> Assertions.assertEquals("debit", SQLHelper.getPaymentMethod())
         );
-    } // сделать баг репорт (в сообщении - успех, в БД - отклонено)
+    } // + сделать баг репорт (в сообщении - успех, в БД - отклонено)
 
     @Test
     void shouldBeErrorInCreditPaymentByDeclinedCard() {
@@ -78,8 +79,8 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> Assertions.assertEquals("credit", SQLHelper.getPaymentMethod())
         );
     }
-    // сделать баг репорт (сообщение - успех, в БД - отклонено)
-    // баг-репорт: БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
+    // + сделать баг репорт (сообщение - успех, в БД - отклонено)
+    // +баг-репорт: БД сохраняет кредитный платеж в дебетовую таблицу = неверный шлюз отправки данных (баг маршрутизации)
 
     @Test
     void shouldAcceptNameWithApostropheInOwnerField() {
@@ -107,7 +108,7 @@ public class PurchaseOfTravelTourDiplomaTest {
     }
 
     @Test
-    void shouldBeErrorForNonExistentCardByDebitByCredit() {
+    void shouldBeErrorForNonExistentCardByCredit() {
         var startPage = Selenide.open("http://localhost:8080/", StartPurchaseTourPage.class);
         var byDebit = startPage.goToByCreditCardPurchase();
         var cardInfo = DataGenerator.generateNonExistentCardInfo();
@@ -116,7 +117,7 @@ public class PurchaseOfTravelTourDiplomaTest {
                 () -> byDebit.checkErrorMessage("Ошибка! Банк отказал в проведении операции."),
                 () -> Assertions.assertNull(SQLHelper.getCreditCardStatus())
         );
-    } //баг репорт по-разному обрабатывается дебет (NULL) и кредит (DECLINED) -несогласованность(неконсистентность)
+    }
 
     @Test
     void shouldNotSendPaymentFormIfOneOfFieldsIsEmpty() {
@@ -182,7 +183,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         Assertions.assertEquals("APPROVED", SQLHelper.getCreditCardStatus());
     }
 
-    @ParameterizedTest(name = "Месяц {0} должен быть валидным в дебите")
+    @ParameterizedTest(name = "Месяц {0} должен быть валидным в дебете")
     @CsvSource({"01", "02", "11", "12"})
     void shouldInDebitAcceptBoundaryValidMonthValuesInMonthField(String month) {
         var startPage = Selenide.open("http://localhost:8080/", StartPurchaseTourPage.class);
@@ -193,7 +194,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         Assertions.assertEquals("APPROVED", SQLHelper.getDebitCardStatus());
     }
 
-    @ParameterizedTest(name = "Месяц {0} должен быть не валидным в дебите")
+    @ParameterizedTest(name = "Месяц {0} должен быть не валидным в дебете")
     @CsvSource({"00", "13"})
     void shouldNotAcceptInvalidBoundaryMonthValuesInMonthFieldDebit(String month) {
         var startPage = Selenide.open("http://localhost:8080/", StartPurchaseTourPage.class);
@@ -213,7 +214,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkErrorSubMessage("Месяц", "Неверно указан срок действия карты");
         Assertions.assertNull(SQLHelper.getCreditCardStatus());
-    } //баг-репорт: в кредите принимает 00 месяц и отправляет форму, в БД -APPROVED
+    } // +баг-репорт: в кредите принимает 00 месяц и отправляет форму, в БД -APPROVED
 
     @ParameterizedTest(name = "Срок действия карты + {0} мес. должен быть валидным в дебите")
     @CsvSource({"0", "1", "59", "60"})
@@ -227,7 +228,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byDebit.filledCardForm(cardInfo);
         byDebit.checkSuccessMessage("Операция одобрена Банком.");
         Assertions.assertEquals("APPROVED", SQLHelper.getDebitCardStatus());
-    } //баг-репорт: приложение не принимает карту сроком действия 59 мес (перед верхней границей граничного значения).
+    } //баг-репорт: приложение не принимает карту сроком действия 59 мес (перед верхней границей граничного значения).???
 
     @ParameterizedTest(name = "Срок действия карты + {0} мес. должен быть валидным в кредите")
     @CsvSource({"0", "1", "59", "60"})
@@ -241,7 +242,7 @@ public class PurchaseOfTravelTourDiplomaTest {
         byCredit.filledCardForm(cardInfo);
         byCredit.checkSuccessMessage("Операция одобрена Банком.");
         Assertions.assertEquals("APPROVED", SQLHelper.getCreditCardStatus());
-    }
+    } //баг-репорт: приложение не принимает карту сроком действия 60 мес???
 
     @Test
     void shouldNotAcceptExpiredCardInDebit() {
@@ -252,9 +253,9 @@ public class PurchaseOfTravelTourDiplomaTest {
         var byDebit = startPage.goToByDebitCardPurchase();
         var cardInfo = DataGenerator.generateApprovedFullCardInfo().toBuilder().month(month).year(year).build();
         byDebit.filledCardForm(cardInfo);
-        byDebit.checkErrorSubMessage("Месяц", "Неверно указан срок действия карты");
+        byDebit.checkExpiryDateError();
         Assertions.assertNull(SQLHelper.getDebitCardStatus());
-    }
+    }// баг-репорт: приложение реагирует по разному на одну и ту же ошибку
 
     @Test
     void shouldNotAcceptExpiredCardInCredit() {
