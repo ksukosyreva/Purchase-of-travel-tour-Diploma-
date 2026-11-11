@@ -1,4 +1,4 @@
-package gateSimulatorTests;
+package ApiTests;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -11,7 +11,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class GateSimulatorTest {
+public class ApiTest {
     private RequestSpecification spec;
 
     @BeforeEach
