@@ -37,41 +37,31 @@
 
 **Ошибки валидации поля «Владелец»**:
 
-- Форма принимает имя на кириллице и отправляет в БД (Issue #7).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/7
+- Форма принимает имя на кириллице и отправляет в БД [Issue #7](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/7) .
 
-- Поле принимает цифры и отправляет данные в БД (Issue #8).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/8
+- Поле принимает цифры и отправляет данные в БД [Issue #8](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/8) .
 
-- Поле принимает спецсимволы и отправляет данные в БД (Issue #10).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/10
+- Поле принимает спецсимволы и отправляет данные в БД [Issue #10](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/10).
 
-- Отсутствует ограничение максимальной длины поля «Владелец» (Issue #9).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/9
+- Отсутствует ограничение максимальной длины поля «Владелец» [Issue #9](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/9).
 
 **Ошибки валидации срока действия карты**:
 
-- Форма принимает невалидное значение 00 в поле «Месяц» и отправляет данные в БД (Issue #4).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/4
+- Форма принимает невалидное значение 00 в поле «Месяц» и отправляет данные в БД [Issue #4](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/4) .
 
-- Несогласованное отображение ошибки валидации при вводе карты с истекшим сроком действия (ошибка "прыгает" по полям и меняет текст) (Issue #6).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/6
+- Несогласованное отображение ошибки валидации при вводе карты с истекшим сроком действия (ошибка "прыгает" по полям и меняет текст) [Issue #6](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/6) .
 
 **Ошибки бизнес-логики и маршрутизации (Backend)**:
 
-- При покупке тура в кредит картой со статусом APPROVED, приложение записывает способ оплаты в БД в дебетовой таблице (Issue #1).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/1
+- При покупке тура в кредит картой со статусом APPROVED, приложение записывает способ оплаты в БД в дебетовой таблице [Issue #1](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/1) .
 
-- При покупке тура в кредит картой со статусом DECLINED, приложение также записывает способ оплаты в дебетовую таблицу (Issue #5).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/5
+- При покупке тура в кредит картой со статусом DECLINED, приложение также записывает способ оплаты в дебетовую таблицу [Issue #5](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/5).
 
 **Ошибки отображения статусов (UI)**:
 
-- Ложное сообщение об успехе при оплате дебетовым способом отклоненной картой (DECLINED) (Issue #3).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/3
+- Ложное сообщение об успехе при оплате дебетовым способом отклоненной картой (DECLINED) [Issue #3](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/3) .
 
-- Ложное сообщение об успехе при оплате в кредит отклоненной картой (DECLINED) (Issue #2).
-  https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/2
+- Ложное сообщение об успехе при оплате в кредит отклоненной картой (DECLINED) [Issue #2](https://github.com/ksukosyreva/Purchase-of-travel-tour-Diploma-/issues/2) .
 
 ## Общие рекомендации
 По итогам тестирования разработчикам рекомендуется обратить внимание на следующие области:
